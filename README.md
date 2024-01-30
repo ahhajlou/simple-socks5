@@ -107,9 +107,9 @@ The server selects one of the methods given in METHODS and sends a METHOD select
 
 ## Stage C
 There are three options for the ATYPE field. If the client has chosen DOMAINNAME, we should resolve the name to an IP address. <br>
-&nbsp;&nbsp;&nbsp;&nbsp;o  IP V4 address: X'01' <br>
-&nbsp;&nbsp;&nbsp;&nbsp;o  DOMAINNAME: X'03' <br>
-&nbsp;&nbsp;&nbsp;&nbsp;o  IP V6 address: X'04' <br>
+&emsp;o  IP V4 address: X'01' <br>
+&emsp;o  DOMAINNAME: X'03' <br>
+&emsp;o  IP V6 address: X'04' <br>
 ```
 +----+-----+-------+------+----------+----------+
 |VER | CMD |  RSV  | ATYP | DST.ADDR | DST.PORT |
@@ -174,6 +174,15 @@ If everything up to this point is correct, we attempt to connect to the host usi
 </details>
 
 ## Stage D
+The SOCKS request information is sent by the client as soon as it has established a connection to the SOCKS server, and completed the authentication negotiations.  The server evaluates the request, and returns a reply formed as follows:
+
+```
++----+-----+-------+------+----------+----------+
+|VER | REP |  RSV  | ATYP | BND.ADDR | BND.PORT |
++----+-----+-------+------+----------+----------+
+| 1  |  1  | X'00' |  1   | Variable |    2     |
++----+-----+-------+------+----------+----------+
+```
 
 <details>
   <summary>Code</summary>
@@ -188,6 +197,7 @@ If everything up to this point is correct, we attempt to connect to the host usi
 	// ...
 ```
 </details>
+<br>
 
 # Proxy data
 In the last step, we create two goroutines to forward the client's data to the server and forward the response from the server to the client.
